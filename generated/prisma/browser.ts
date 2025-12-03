@@ -18,17 +18,17 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
- * Model genres
+ * Model Genre
  * 
  */
-export type genres = Prisma.genresModel
+export type Genre = Prisma.GenreModel
 /**
- * Model languages
+ * Model Language
  * 
  */
-export type languages = Prisma.languagesModel
+export type Language = Prisma.LanguageModel
 /**
- * Model movies
+ * Model Movie
  * 
  */
-export type movies = Prisma.moviesModel
+export type Movie = Prisma.MovieModel

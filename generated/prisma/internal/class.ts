@@ -17,10 +17,10 @@ import type * as Prisma from "./prismaNamespace.js"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.0.1",
-  "engineVersion": "f09f2815f091dbba658cdcd2264306d88bb5bda6",
+  "clientVersion": "7.1.0",
+  "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel genres {\n  id     Int      @id @default(autoincrement())\n  name   String?  @db.VarChar(100)\n  movies movies[]\n}\n\nmodel languages {\n  id     Int      @id @default(autoincrement())\n  name   String?  @db.VarChar(100)\n  movies movies[]\n}\n\nmodel movies {\n  id           Int        @id @default(autoincrement())\n  title        String?    @db.VarChar(100)\n  release_date DateTime?  @db.Date\n  genre_id     Int?\n  language_id  Int?\n  oscar_count  Int?\n  genres       genres?    @relation(fields: [genre_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"fk_genre\")\n  languages    languages? @relation(fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"fk_language\")\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Genre {\n  id     Int     @id @default(autoincrement())\n  name   String? @db.VarChar(100)\n  movies Movie[]\n\n  @@map(\"genres\")\n}\n\nmodel Language {\n  id     Int     @id @default(autoincrement())\n  name   String? @db.VarChar(100)\n  movies Movie[]\n\n  @@map(\"languages\")\n}\n\nmodel Movie {\n  id           Int       @id @default(autoincrement())\n  title        String?   @db.VarChar(100)\n  release_date DateTime? @db.Date\n  genre_id     Int?\n  language_id  Int?\n  oscar_count  Int?\n  genres       Genre?    @relation(fields: [genre_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"fk_genre\")\n  languages    Language? @relation(fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: \"fk_language\")\n\n  @@map(\"movies\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"genres\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"movies\",\"kind\":\"object\",\"type\":\"movies\",\"relationName\":\"genresTomovies\"}],\"dbName\":null},\"languages\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"movies\",\"kind\":\"object\",\"type\":\"movies\",\"relationName\":\"languagesTomovies\"}],\"dbName\":null},\"movies\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"release_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"genre_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"language_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"oscar_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"genres\",\"kind\":\"object\",\"type\":\"genres\",\"relationName\":\"genresTomovies\"},{\"name\":\"languages\",\"kind\":\"object\",\"type\":\"languages\",\"relationName\":\"languagesTomovies\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Genre\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"movies\",\"kind\":\"object\",\"type\":\"Movie\",\"relationName\":\"GenreToMovie\"}],\"dbName\":\"genres\"},\"Language\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"movies\",\"kind\":\"object\",\"type\":\"Movie\",\"relationName\":\"LanguageToMovie\"}],\"dbName\":\"languages\"},\"Movie\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"release_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"genre_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"language_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"oscar_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"genres\",\"kind\":\"object\",\"type\":\"Genre\",\"relationName\":\"GenreToMovie\"},{\"name\":\"languages\",\"kind\":\"object\",\"type\":\"Language\",\"relationName\":\"LanguageToMovie\"}],\"dbName\":\"movies\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -59,10 +59,10 @@ export interface PrismaClientConstructor {
    * ```
    * const prisma = new PrismaClient()
    * // Fetch zero or more Genres
-   * const genres = await prisma.genres.findMany()
+   * const genres = await prisma.genre.findMany()
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   * Read more in our [docs](https://pris.ly/d/client).
    */
 
   new <
@@ -81,10 +81,10 @@ export interface PrismaClientConstructor {
  * ```
  * const prisma = new PrismaClient()
  * // Fetch zero or more Genres
- * const genres = await prisma.genres.findMany()
+ * const genres = await prisma.genre.findMany()
  * ```
  * 
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ * Read more in our [docs](https://pris.ly/d/client).
  */
 
 export interface PrismaClient<
@@ -113,7 +113,7 @@ export interface PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -125,7 +125,7 @@ export interface PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -136,7 +136,7 @@ export interface PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -148,7 +148,7 @@ export interface PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -175,34 +175,34 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.genres`: Exposes CRUD operations for the **genres** model.
+   * `prisma.genre`: Exposes CRUD operations for the **Genre** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Genres
-    * const genres = await prisma.genres.findMany()
+    * const genres = await prisma.genre.findMany()
     * ```
     */
-  get genres(): Prisma.genresDelegate<ExtArgs, { omit: OmitOpts }>;
+  get genre(): Prisma.GenreDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.languages`: Exposes CRUD operations for the **languages** model.
+   * `prisma.language`: Exposes CRUD operations for the **Language** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Languages
-    * const languages = await prisma.languages.findMany()
+    * const languages = await prisma.language.findMany()
     * ```
     */
-  get languages(): Prisma.languagesDelegate<ExtArgs, { omit: OmitOpts }>;
+  get language(): Prisma.LanguageDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.movies`: Exposes CRUD operations for the **movies** model.
+   * `prisma.movie`: Exposes CRUD operations for the **Movie** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Movies
-    * const movies = await prisma.movies.findMany()
+    * const movies = await prisma.movie.findMany()
     * ```
     */
-  get movies(): Prisma.moviesDelegate<ExtArgs, { omit: OmitOpts }>;
+  get movie(): Prisma.MovieDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

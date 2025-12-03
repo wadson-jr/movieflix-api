@@ -51,9 +51,9 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  genres: 'genres',
-  languages: 'languages',
-  movies: 'movies'
+  Genre: 'Genre',
+  Language: 'Language',
+  Movie: 'Movie'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -72,23 +72,23 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const GenresScalarFieldEnum = {
+export const GenreScalarFieldEnum = {
   id: 'id',
   name: 'name'
 } as const
 
-export type GenresScalarFieldEnum = (typeof GenresScalarFieldEnum)[keyof typeof GenresScalarFieldEnum]
+export type GenreScalarFieldEnum = (typeof GenreScalarFieldEnum)[keyof typeof GenreScalarFieldEnum]
 
 
-export const LanguagesScalarFieldEnum = {
+export const LanguageScalarFieldEnum = {
   id: 'id',
   name: 'name'
 } as const
 
-export type LanguagesScalarFieldEnum = (typeof LanguagesScalarFieldEnum)[keyof typeof LanguagesScalarFieldEnum]
+export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
 
 
-export const MoviesScalarFieldEnum = {
+export const MovieScalarFieldEnum = {
   id: 'id',
   title: 'title',
   release_date: 'release_date',
@@ -97,7 +97,7 @@ export const MoviesScalarFieldEnum = {
   oscar_count: 'oscar_count'
 } as const
 
-export type MoviesScalarFieldEnum = (typeof MoviesScalarFieldEnum)[keyof typeof MoviesScalarFieldEnum]
+export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
 
 
 export const SortOrder = {
