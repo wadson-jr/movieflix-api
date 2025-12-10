@@ -121,5 +121,5 @@ app.get("/movies/:genreName", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`servidor em execução na porta ${port}`);
+  console.log(`servidor em execução na porta http://localhost:${port}`);
 });
